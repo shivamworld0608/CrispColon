@@ -7,6 +7,8 @@ import cors from 'cors';
 import multer from 'multer';
 import axios from 'axios';
 import fs from 'fs';
+import path from 'path';
+import url from 'url';
 
 
 
@@ -59,6 +61,16 @@ const authenticate = (req, res, next) => {
 
 
 //x-ray handling multer configuration
+
+// Check and create uploads directory, first getting system specific file path and then extracting directory name and then joining upload with it
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const baseDir = process.env.NODE_ENV === "production" ? '/tmp' : __dirname;
+const uploadsDir = path.join(baseDir, 'uploads'); // Use absolute path
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
 // Set up storage and file naming
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -121,7 +133,7 @@ app.post("/api/upload",authenticate, upload.single("file"), async (req, res) => 
       console.log("User history updated:", user.history);
     }
     
-    res.json({ success: true, prediction });
+    res.json({ success: true, prediction, user });
   } catch (error) {
     console.error("Error sending image to Python model:", error);
     res.status(500).json({ success: false, error: "Prediction failed" });

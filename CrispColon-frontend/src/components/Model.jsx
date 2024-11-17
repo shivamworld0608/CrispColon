@@ -1,12 +1,17 @@
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setAuthUser } from "../Redux/authSlice";
 
 const Model = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [sendImage, setSendImage] = useState(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [isUploading, setIsUploading] = useState(false); // Loading state
+  const [prediction, setPrediction] = useState(null);
+
+  const dispatch = useDispatch();
 
   const handleImageUpload = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -33,6 +38,8 @@ const Model = () => {
             error: "Image upload failed",
           }
         ).then((response) => {
+          dispatch(setAuthUser({ authUser: true, userData: response.data.user }));
+          setPrediction(response.data.prediction);
           setUploadSuccess(true);
           console.log("Image uploaded successfully");
         });
@@ -81,7 +88,7 @@ const Model = () => {
         </button>
 
         {uploadSuccess && (
-          <p className="text-green-500 mt-4">Predicted Succesfully!</p>
+          <p className="text-green-500 mt-4">{prediction}</p>
         )}
       </div>
     </div>
