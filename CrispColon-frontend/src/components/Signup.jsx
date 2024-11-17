@@ -36,7 +36,7 @@ const Signup = () => {
         axios.post(`${import.meta.env.REACT_APP_BASE_URL}/api/signup`, formData, { withCredentials: true }),
         {
           loading: 'Signing up...',
-          success: "Signup successful!",
+          success: "Veriy OTP to complete signup",
           error: "Signup failed",
         }
       ).then((response) => {
