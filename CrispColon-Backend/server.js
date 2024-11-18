@@ -98,17 +98,15 @@ cloudinary.config({
 //to check uploading x-ray
 app.post("/api/upload",authenticate, upload.single("file"), async (req, res) => {
    const imagePath = req.file.path;
-  try {
-    // Send the image to the Python model server
-    await axios.post("https://cancer-detection-model.onrender.com/predict", {
-      imagePath,
-    })
-   .then(response){
-      // Get prediction result from Python
-    const prediction = response.data.prediction; 
-    console.log("prediction: ",prediction);
-    }
-    
+   try {
+  const response = await axios.post("https://cancer-detection-model.onrender.com/predict", {
+    imagePath,
+  });
+  const prediction = response.data.prediction; 
+  console.log("prediction: ", prediction);
+} catch (error) {
+  console.error("Error fetching prediction:", error);
+}
     // Upload the image to Cloudinary
     const x = await cloudinary.uploader.upload(imagePath);
     console.log(x);
