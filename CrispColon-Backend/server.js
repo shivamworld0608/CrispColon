@@ -7,6 +7,7 @@ import cors from 'cors';
 import multer from 'multer';
 import axios from 'axios';
 import fs from 'fs';
+import FormData from 'form-data';
 import path from 'path';
 import url from 'url';
 
@@ -99,17 +100,21 @@ cloudinary.config({
 app.post("/api/upload",authenticate, upload.single("file"), async (req, res) => {
    const imagePath = req.file.path;
    try {
-  const response = await axios.post("https://cancer-detection-model.onrender.com/predict", {
-    imagePath,
-  });
-  const prediction = response.data.prediction; 
-  console.log("prediction: ", prediction);
-} catch (error) {
-  console.error("Error fetching prediction:", error);
-}
+    const form = new FormData();
+    form.append("file", fs.createReadStream(imagePath));
+
+    // Send the image to the Flask server
+    const response = await axios.post("https://cancer-detection-model.onrender.com/predict", form, {
+      headers: form.getHeaders(),
+    });
+
+    const prediction = response.data.prediction;
+    console.log("Prediction:", prediction);
+
     // Upload the image to Cloudinary
     const x = await cloudinary.uploader.upload(imagePath);
     console.log(x);
+
 
     // Clean up the uploaded image file
     fs.unlinkSync(imagePath);
