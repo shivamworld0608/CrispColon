@@ -100,14 +100,14 @@ app.post("/api/upload",authenticate, upload.single("file"), async (req, res) => 
    const imagePath = req.file.path;
   try {
     // Send the image to the Python model server
-    /* const response = await axios.post("http://localhost:5001/predict", {
+    await axios.post("https://cancer-detection-model.onrender.com/predict", {
       imagePath,
-    }); */
-
-    // Get prediction result from Python
-    /*   const prediction = response.data.prediction; */
-    const prediction = "Not positive";
+    })
+   .then(response){
+      // Get prediction result from Python
+    const prediction = response.data.prediction; 
     console.log("prediction: ",prediction);
+    }
     
     // Upload the image to Cloudinary
     const x = await cloudinary.uploader.upload(imagePath);
