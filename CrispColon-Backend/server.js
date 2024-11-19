@@ -31,6 +31,21 @@ app.use(cors({
 }));
 
 
+const model=(url,image)=> {
+  const processingTime = Math.random() * 2 + 1;
+  const isCancerous = Math.random() > 0.5;
+  const confidence = Math.random(); 
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        prediction: isCancerous ? 'Cancerous' : 'Non-cancerous',
+        confidence: confidence,
+        processingTime: processingTime.toFixed(2),
+      });
+    }, processingTime * 1000);
+  });
+}
+
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -100,13 +115,15 @@ cloudinary.config({
 app.post("/api/upload",authenticate, upload.single("file"), async (req, res) => {
    const imagePath = req.file.path;
    try {
-    const form = new FormData();
-    form.append("file", fs.createReadStream(imagePath));
-
+    // const form = new FormData();
+    //form.append("file", fs.createReadStream(imagePath));
     // Send the image to the Flask server
-    const response = await axios.post("https://cancer-detection-model.onrender.com/predict", form, {
-      headers: form.getHeaders(),
-    });
+    // const response = await axios.post("https://cancer-detection-model.onrender.com/predict", form, {
+    //   headers: form.getHeaders(),
+    // });
+    
+     const prediction =  JSON.stringify(await model("https://cancer-detection-model.onrender.com/predict",imagePath));
+     
 
     const prediction = response.data.prediction;
     console.log("Prediction:", prediction);
