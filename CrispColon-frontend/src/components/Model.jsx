@@ -39,7 +39,8 @@ const Model = () => {
           }
         ).then((response) => {
           dispatch(setAuthUser({ authUser: true, userData: response.data.user }));
-          setPrediction(response.data.prediction);
+           const x = JSON.parse(response.data.prediction);
+          setPrediction(x);
           setUploadSuccess(true);
           console.log("Image uploaded successfully");
         });
