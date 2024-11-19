@@ -97,7 +97,7 @@ const Model = () => {
        
            <div className="flex items-center justify-between">
              <p className="text-lg font-medium text-gray-600">Confidence:</p>
-             <p className="text-xl font-semibold text-blue-500">{prediction.confidence.toFixed(2)}</p>
+             <p className="text-xl font-semibold text-blue-500">{prediction.confidence}</p>
            </div>
        
            <div className="flex items-center justify-between">
