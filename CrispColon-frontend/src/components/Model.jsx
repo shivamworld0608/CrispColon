@@ -88,7 +88,11 @@ const Model = () => {
         </button>
 
         {uploadSuccess && (
-          <p className="text-green-500 mt-4">{prediction}</p>
+        <div>
+          <p className="text-green-500 mt-4">Prediction: {prediction.prediction}</p>
+          <p className="text-green-500 mt-4">Confidence: {prediction.confidence}</p>
+          <p className="text-green-500 mt-4">ProcessingTime: {prediction.processingTime}</p>
+          </div>
         )}
       </div>
     </div>
