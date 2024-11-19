@@ -88,11 +88,22 @@ const Model = () => {
         </button>
 
         {uploadSuccess && (
-        <div>
-          <p className="text-green-500 mt-4">Prediction: {prediction.prediction}</p>
-          <p className="text-green-500 mt-4">Confidence: {prediction.confidence}</p>
-          <p className="text-green-500 mt-4">ProcessingTime: {prediction.processingTime}</p>
-          </div>
+        <div className="space-y-3 mt-4 w-full">
+           <div className="flex items-center justify-between">
+             <p className="text-lg font-medium text-gray-600">Prediction:</p>
+             <p className="ml-2 text-xl font-semibold text-green-500">{prediction.prediction}</p>
+           </div>
+       
+           <div className="flex items-center justify-between">
+             <p className="text-lg font-medium text-gray-600">Confidence:</p>
+             <p className="text-xl font-semibold text-blue-500">{prediction.confidence.toFixed(2)}</p>
+           </div>
+       
+           <div className="flex items-center justify-between">
+             <p className="text-lg font-medium text-gray-600">Processing Time:</p>
+             <p className="text-xl font-semibold text-purple-500">{prediction.processingTime}s</p>
+           </div>
+         </div>
         )}
       </div>
     </div>
