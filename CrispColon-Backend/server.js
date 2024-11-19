@@ -121,12 +121,12 @@ app.post("/api/upload",authenticate, upload.single("file"), async (req, res) => 
     // const response = await axios.post("https://cancer-detection-model.onrender.com/predict", form, {
     //   headers: form.getHeaders(),
     // });
+    // const prediction = response.data.prediction;
+    // console.log("Prediction:", prediction);
     
      const prediction =  JSON.stringify(await model("https://cancer-detection-model.onrender.com/predict",imagePath));
      
 
-    const prediction = response.data.prediction;
-    console.log("Prediction:", prediction);
 
     // Upload the image to Cloudinary
     const x = await cloudinary.uploader.upload(imagePath);
