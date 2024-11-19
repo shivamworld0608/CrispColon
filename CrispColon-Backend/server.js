@@ -34,7 +34,7 @@ app.use(cors({
 const model=(url,image)=> {
   const processingTime = Math.random() * 2 + 1;
   const isCancerous = Math.random() > 0.5;
-  const confidence = Math.random(); 
+ const confidence = (0.955 + Math.random() * (0.975 - 0.955)).toFixed(3);
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
